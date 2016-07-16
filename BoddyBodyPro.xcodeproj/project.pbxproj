@@ -9,11 +9,14 @@
 /* Begin PBXBuildFile section */
 		646D9DB61D39756D0059E634 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 646D9DB51D39756D0059E634 /* main.m */; };
 		646D9DB91D39756D0059E634 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 646D9DB81D39756D0059E634 /* AppDelegate.m */; };
-		646D9DBC1D39756D0059E634 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 646D9DBB1D39756D0059E634 /* ViewController.m */; };
+		646D9DBC1D39756D0059E634 /* ExerciseTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 646D9DBB1D39756D0059E634 /* ExerciseTableController.m */; };
 		646D9DBF1D39756D0059E634 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 646D9DBD1D39756D0059E634 /* Main.storyboard */; };
 		646D9DC21D39756D0059E634 /* BoddyBodyPro.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 646D9DC01D39756D0059E634 /* BoddyBodyPro.xcdatamodeld */; };
 		646D9DC41D39756D0059E634 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 646D9DC31D39756D0059E634 /* Assets.xcassets */; };
 		646D9DC71D39756D0059E634 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 646D9DC51D39756D0059E634 /* LaunchScreen.storyboard */; };
+		646D9DD01D3983CF0059E634 /* ModelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 646D9DCF1D3983CF0059E634 /* ModelController.m */; };
+		646D9DD31D398BD60059E634 /* NetworkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 646D9DD21D398BD60059E634 /* NetworkController.m */; };
+		646D9DD61D3AE4F70059E634 /* ExerciseDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 646D9DD51D3AE4F70059E634 /* ExerciseDetailViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,13 +24,19 @@
 		646D9DB51D39756D0059E634 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		646D9DB71D39756D0059E634 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		646D9DB81D39756D0059E634 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		646D9DBA1D39756D0059E634 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		646D9DBB1D39756D0059E634 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		646D9DBA1D39756D0059E634 /* ExerciseTableController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExerciseTableController.h; sourceTree = "<group>"; };
+		646D9DBB1D39756D0059E634 /* ExerciseTableController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExerciseTableController.m; sourceTree = "<group>"; };
 		646D9DBE1D39756D0059E634 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		646D9DC11D39756D0059E634 /* BoddyBodyPro.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BoddyBodyPro.xcdatamodel; sourceTree = "<group>"; };
 		646D9DC31D39756D0059E634 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		646D9DC61D39756D0059E634 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		646D9DC81D39756D0059E634 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		646D9DCE1D3983CF0059E634 /* ModelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelController.h; sourceTree = "<group>"; };
+		646D9DCF1D3983CF0059E634 /* ModelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelController.m; sourceTree = "<group>"; };
+		646D9DD11D398BD60059E634 /* NetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkController.h; sourceTree = "<group>"; };
+		646D9DD21D398BD60059E634 /* NetworkController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkController.m; sourceTree = "<group>"; };
+		646D9DD41D3AE4F70059E634 /* ExerciseDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExerciseDetailViewController.h; sourceTree = "<group>"; };
+		646D9DD51D3AE4F70059E634 /* ExerciseDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExerciseDetailViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,14 +71,20 @@
 			children = (
 				646D9DB71D39756D0059E634 /* AppDelegate.h */,
 				646D9DB81D39756D0059E634 /* AppDelegate.m */,
-				646D9DBA1D39756D0059E634 /* ViewController.h */,
-				646D9DBB1D39756D0059E634 /* ViewController.m */,
+				646D9DBA1D39756D0059E634 /* ExerciseTableController.h */,
+				646D9DBB1D39756D0059E634 /* ExerciseTableController.m */,
 				646D9DBD1D39756D0059E634 /* Main.storyboard */,
 				646D9DC31D39756D0059E634 /* Assets.xcassets */,
 				646D9DC51D39756D0059E634 /* LaunchScreen.storyboard */,
 				646D9DC81D39756D0059E634 /* Info.plist */,
 				646D9DC01D39756D0059E634 /* BoddyBodyPro.xcdatamodeld */,
 				646D9DB41D39756D0059E634 /* Supporting Files */,
+				646D9DCE1D3983CF0059E634 /* ModelController.h */,
+				646D9DCF1D3983CF0059E634 /* ModelController.m */,
+				646D9DD11D398BD60059E634 /* NetworkController.h */,
+				646D9DD21D398BD60059E634 /* NetworkController.m */,
+				646D9DD41D3AE4F70059E634 /* ExerciseDetailViewController.h */,
+				646D9DD51D3AE4F70059E634 /* ExerciseDetailViewController.m */,
 			);
 			path = BoddyBodyPro;
 			sourceTree = "<group>";
@@ -152,10 +167,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				646D9DBC1D39756D0059E634 /* ViewController.m in Sources */,
+				646D9DBC1D39756D0059E634 /* ExerciseTableController.m in Sources */,
 				646D9DB91D39756D0059E634 /* AppDelegate.m in Sources */,
+				646D9DD01D3983CF0059E634 /* ModelController.m in Sources */,
 				646D9DC21D39756D0059E634 /* BoddyBodyPro.xcdatamodeld in Sources */,
+				646D9DD31D398BD60059E634 /* NetworkController.m in Sources */,
 				646D9DB61D39756D0059E634 /* main.m in Sources */,
+				646D9DD61D3AE4F70059E634 /* ExerciseDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +322,7 @@
 				646D9DCD1D39756D0059E634 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
