@@ -6,7 +6,13 @@
         <attribute name="language" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Language" syncable="YES">
+        <attribute name="full_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="short_name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Exercise" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="Language" positionX="-54" positionY="18" width="128" height="90"/>
     </elements>
 </model>

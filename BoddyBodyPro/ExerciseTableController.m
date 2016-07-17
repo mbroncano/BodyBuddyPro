@@ -62,11 +62,15 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    NSIndexPath *index = self.tableView.indexPathForSelectedRow;
-    NSManagedObject *exercise = fetchedController.fetchedObjects[index.row];
-    
-    ExerciseDetailViewController *next = segue.destinationViewController;
-    next.exerciseId = [exercise valueForKey:@"id"];
+
+    if ([segue.identifier isEqualToString:@"Detail"]) {
+        NSIndexPath *index = self.tableView.indexPathForSelectedRow;
+        NSManagedObject *exercise = fetchedController.fetchedObjects[index.row];
+        
+        ExerciseDetailViewController *next = segue.destinationViewController;
+        next.exerciseId = [exercise valueForKey:@"id"];
+    } else if ([segue.identifier isEqualToString:@"Settings"]) {
+    }
 }
 
 - (void)viewDidLoad {

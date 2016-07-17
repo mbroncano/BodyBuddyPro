@@ -18,7 +18,8 @@
 - (NSManagedObjectContext *)privateObjectContext;
 - (BOOL)synchronize;
 
-+ (NSManagedObject *)exerciseWithId:(NSNumber *)objectId withContext:(NSManagedObjectContext *)context;
++ (NSManagedObject *)objectWithId:(NSNumber *)objectId forEntityName:(NSString *)entityName withinContext:(NSManagedObjectContext *)context;
+
 - (NSFetchRequest *)allExercisesRequest;
 - (NSPredicate *)allExercisesPredicateWithSearchFilter:(NSString *)searchFilter;
 

@@ -85,11 +85,11 @@
     return store;
 }
 
-+ (NSManagedObject *)exerciseWithId:(nonnull NSNumber *)objectId withContext:(nonnull NSManagedObjectContext *)context{
++ (NSManagedObject *)objectWithId:(NSNumber *)objectId forEntityName:(NSString *)entityName withinContext:(NSManagedObjectContext *)context{
     NSError *error = nil;
 
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Exercise"];
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES]];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"id" ascending:YES]];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"id == %@", objectId];
     
     NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
@@ -98,7 +98,7 @@
         // TODO: check for multiple results
         if (results.count == 0) {
             NSManagedObject *exercise = [NSEntityDescription
-                                         insertNewObjectForEntityForName:@"Exercise"
+                                         insertNewObjectForEntityForName:entityName
                                          inManagedObjectContext:context];
             
             [exercise setValue:objectId forKey:@"id"];
@@ -111,7 +111,7 @@
     return nil;
 }
 
-- (NSPredicate *)allExercisesPredicateWithSearchFilter:(nonnull NSString *)searchFilter {
+- (NSPredicate *)allExercisesPredicateWithSearchFilter:(NSString *)searchFilter {
     NSMutableArray *predicateArray = [@[] mutableCopy];
 
     [predicateArray addObject: [NSPredicate predicateWithFormat:@"language == %ld", self.language]];

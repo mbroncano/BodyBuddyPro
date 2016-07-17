@@ -52,7 +52,7 @@
 
     NSManagedObjectContext *context = [[ModelController sharedInstance] mainObjectContext];
     // TODO: check for errors
-    NSManagedObject *exercise = [ModelController exerciseWithId:self.exerciseId withContext:context];
+    NSManagedObject *exercise = [ModelController objectWithId:self.exerciseId forEntityName:@"Exercise" withinContext:context];
     
 //    self.nameLabel.text = [exercise valueForKey:@"name"];    
 //    self.descLabel.text = [exercise valueForKey:@"desc"];

@@ -12,5 +12,6 @@
 
 + (NetworkController *)sharedInstance;
 - (void)retrieveExercises;
+- (void)retrieveLanguagesWithCompletion:(void (^)(void))block;
 
 @end
