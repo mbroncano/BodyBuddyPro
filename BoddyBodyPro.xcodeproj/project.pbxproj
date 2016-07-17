@@ -18,6 +18,7 @@
 		646D9DD31D398BD60059E634 /* NetworkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 646D9DD21D398BD60059E634 /* NetworkController.m */; };
 		646D9DD61D3AE4F70059E634 /* ExerciseDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 646D9DD51D3AE4F70059E634 /* ExerciseDetailViewController.m */; };
 		646D9DD91D3B01D80059E634 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 646D9DD81D3B01D80059E634 /* SettingsViewController.m */; };
+		646D9DDC1D3B0AA40059E634 /* ItemTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 646D9DDB1D3B0AA40059E634 /* ItemTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,8 @@
 		646D9DD51D3AE4F70059E634 /* ExerciseDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExerciseDetailViewController.m; sourceTree = "<group>"; };
 		646D9DD71D3B01D80059E634 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		646D9DD81D3B01D80059E634 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		646D9DDA1D3B0AA40059E634 /* ItemTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemTableViewController.h; sourceTree = "<group>"; };
+		646D9DDB1D3B0AA40059E634 /* ItemTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +93,8 @@
 				646D9DD51D3AE4F70059E634 /* ExerciseDetailViewController.m */,
 				646D9DD71D3B01D80059E634 /* SettingsViewController.h */,
 				646D9DD81D3B01D80059E634 /* SettingsViewController.m */,
+				646D9DDA1D3B0AA40059E634 /* ItemTableViewController.h */,
+				646D9DDB1D3B0AA40059E634 /* ItemTableViewController.m */,
 			);
 			path = BoddyBodyPro;
 			sourceTree = "<group>";
@@ -176,6 +181,7 @@
 				646D9DB91D39756D0059E634 /* AppDelegate.m in Sources */,
 				646D9DD01D3983CF0059E634 /* ModelController.m in Sources */,
 				646D9DD91D3B01D80059E634 /* SettingsViewController.m in Sources */,
+				646D9DDC1D3B0AA40059E634 /* ItemTableViewController.m in Sources */,
 				646D9DC21D39756D0059E634 /* BoddyBodyPro.xcdatamodeld in Sources */,
 				646D9DD31D398BD60059E634 /* NetworkController.m in Sources */,
 				646D9DB61D39756D0059E634 /* main.m in Sources */,

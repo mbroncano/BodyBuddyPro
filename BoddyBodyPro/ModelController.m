@@ -10,12 +10,23 @@
 
 @implementation ModelController
 
+- (void)setLanguageId:(NSNumber *)languageId {
+    [[NSUserDefaults standardUserDefaults] setValue:languageId forKey:@"languageId"];
+}
+
+- (NSNumber *)languageId {
+    NSNumber *languageId = [[NSUserDefaults standardUserDefaults] valueForKey:@"languageId"];
+    if (languageId == nil) {
+        languageId = @(2);
+    }
+    return languageId;
+}
+
 + (ModelController *)sharedInstance {
     static ModelController *instance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [[ModelController alloc] init];
-        instance.language = 2;
     });
     
     return instance;
@@ -114,7 +125,7 @@
 - (NSPredicate *)allExercisesPredicateWithSearchFilter:(NSString *)searchFilter {
     NSMutableArray *predicateArray = [@[] mutableCopy];
 
-    [predicateArray addObject: [NSPredicate predicateWithFormat:@"language == %ld", self.language]];
+    [predicateArray addObject: [NSPredicate predicateWithFormat:@"language == %@", self.languageId]];
     if (![searchFilter isEqualToString:@""]) {
         [predicateArray addObject: [NSPredicate predicateWithFormat:@"name contains %@", searchFilter]];
     }
@@ -129,6 +140,12 @@
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name"
                                                               ascending:YES
                                                                selector:@selector(localizedCaseInsensitiveCompare:)]];
+    return request;
+}
+
++ (NSFetchRequest *)requestForEntityName:(NSString *)entityName {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"id" ascending:YES]];
     return request;
 }
 

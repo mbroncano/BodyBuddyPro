@@ -22,6 +22,21 @@
 
 @implementation ExerciseTableController
 
+- (void)refreshData {
+    [[NetworkController sharedInstance] retrieveExercises];
+
+    [self updateFetchRequest];
+    [self.tableView reloadData];
+
+    if (self.refreshControl.isRefreshing) {
+        [self.refreshControl endRefreshing];
+    }
+}
+
+- (IBAction)settingsUpdated:(UIStoryboardSegue *)sender {
+    [self refreshData];
+}
+
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
     searchString = [searchController.searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -30,19 +45,8 @@
     [self.tableView reloadData];
 }
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
-{
-//    [self.tableView beginUpdates];
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(nullable NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(nullable NSIndexPath *)newIndexPath
-{
-    // TODO: implement this
-}
-
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-//    [self.tableView endUpdates];
     [self.tableView reloadData];
 }
 
@@ -62,14 +66,12 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-
     if ([segue.identifier isEqualToString:@"Detail"]) {
         NSIndexPath *index = self.tableView.indexPathForSelectedRow;
         NSManagedObject *exercise = fetchedController.fetchedObjects[index.row];
         
         ExerciseDetailViewController *next = segue.destinationViewController;
         next.exerciseId = [exercise valueForKey:@"id"];
-    } else if ([segue.identifier isEqualToString:@"Settings"]) {
     }
 }
 
@@ -80,17 +82,25 @@
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     self.searchController.searchResultsUpdater = self;
     self.searchController.obscuresBackgroundDuringPresentation = NO;
-    self.searchController.hidesNavigationBarDuringPresentation = NO;
     self.searchController.searchBar.delegate = self;
     self.tableView.tableHeaderView = self.searchController.searchBar;
     self.definesPresentationContext = YES;
     
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
+    
     // try and update the list from the network
     [[NetworkController sharedInstance] retrieveExercises];
-
-    // setup the fetch request
+    
+    // init fetch controller
     searchString = @"";
-    [self initFetchRequest];
+    fetchedController = [[NSFetchedResultsController alloc]
+                         initWithFetchRequest:[[ModelController sharedInstance] allExercisesRequest]
+                         managedObjectContext:[[ModelController sharedInstance] mainObjectContext]
+                         sectionNameKeyPath:nil
+                         cacheName:nil];
+                             
+    fetchedController.delegate = self;
     [self updateFetchRequest];
 }
 
@@ -103,16 +113,6 @@
         
         abort();
     }
-}
-
-- (void)initFetchRequest {
-    fetchedController = [[NSFetchedResultsController alloc]
-                         initWithFetchRequest:[[ModelController sharedInstance] allExercisesRequest]
-                         managedObjectContext:[[ModelController sharedInstance] mainObjectContext]
-                         sectionNameKeyPath:nil
-                         cacheName:nil];
-    
-    fetchedController.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning {

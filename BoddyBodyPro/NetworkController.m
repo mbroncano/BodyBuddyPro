@@ -143,12 +143,13 @@
     // add language query
     NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
     NSMutableArray *queryItems = [components.queryItems? components.queryItems : @[] mutableCopy];
-    NSString *language = [NSString stringWithFormat:@"%ld", [ModelController sharedInstance].language];
+    NSString *language = [NSString stringWithFormat:@"%@", [ModelController sharedInstance].languageId];
     [queryItems addObject: [NSURLQueryItem queryItemWithName:@"language" value:language]];
     components.queryItems = queryItems;
     url = components.URL;
 
     NSURLRequest *request = [NSURLRequest requestWithURL: url];
+    NSLog(@"request: %@", request);
     
     [self issueRequest:request withUpdateBlock:^(NSDictionary *result) {
         NSManagedObjectContext *context = [[ModelController sharedInstance] privateObjectContext];

@@ -11,7 +11,7 @@
 
 @interface ModelController : NSObject
 
-@property(assign) NSInteger language;
+@property(assign) NSNumber *languageId;
 
 + (ModelController *)sharedInstance;
 - (NSManagedObjectContext *)mainObjectContext;
@@ -19,6 +19,7 @@
 - (BOOL)synchronize;
 
 + (NSManagedObject *)objectWithId:(NSNumber *)objectId forEntityName:(NSString *)entityName withinContext:(NSManagedObjectContext *)context;
++ (NSFetchRequest *)requestForEntityName:(NSString *)entityName;
 
 - (NSFetchRequest *)allExercisesRequest;
 - (NSPredicate *)allExercisesPredicateWithSearchFilter:(NSString *)searchFilter;
