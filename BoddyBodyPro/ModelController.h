@@ -18,6 +18,7 @@
 - (NSManagedObjectContext *)privateObjectContext;
 - (BOOL)synchronize;
 
++ (NSArray *)objectWithValue:(id)value forAttribute:(NSString *)attribute forEntityName:(NSString *)entityName withinContext:(NSManagedObjectContext *)context;
 + (NSManagedObject *)objectWithId:(NSNumber *)objectId forEntityName:(NSString *)entityName withinContext:(NSManagedObjectContext *)context;
 + (NSFetchRequest *)requestForEntityName:(NSString *)entityName;
 

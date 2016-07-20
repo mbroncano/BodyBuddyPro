@@ -38,11 +38,17 @@
 }
 
 - (void)updateView {
-    NSManagedObject *language = [self currentLanguage];
-    
-    if (language != nil) {
-        self.languageLabel.text = [language valueForKey:@"full_name"];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *fullName = [[self currentLanguage] valueForKey:@"full_name"];
+        
+        // be sure that we warn the user if the languages are not retrieved yet
+        self.tableView.allowsSelection = (fullName != nil);
+        if (fullName == nil) {
+            fullName = @"(loading ...)";
+        }
+        
+        self.languageLabel.text = fullName;
+    });
 }
 
 - (void)viewDidLoad {
@@ -61,7 +67,6 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-
     if ([segue.identifier isEqualToString:@"Detail"]) {
         ItemTableViewController *next = segue.destinationViewController;
         

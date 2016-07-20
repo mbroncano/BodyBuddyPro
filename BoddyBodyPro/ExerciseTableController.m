@@ -24,6 +24,7 @@
 
 - (void)refreshData {
     [[NetworkController sharedInstance] retrieveExercises];
+    [[NetworkController sharedInstance] retrieveMuscles];
 
     [self updateFetchRequest];
     [self.tableView reloadData];
@@ -90,7 +91,9 @@
     [self.refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
     
     // try and update the list from the network
+    // TODO: track some form of cache to avoid reloading
     [[NetworkController sharedInstance] retrieveExercises];
+    [[NetworkController sharedInstance] retrieveMuscles];
     
     // init fetch controller
     searchString = @"";

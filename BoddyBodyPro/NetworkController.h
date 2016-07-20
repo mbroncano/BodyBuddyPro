@@ -8,10 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void(^updateBlock)(NSDictionary *);
+typedef void(^completionBlock)();
+
 @interface NetworkController : NSObject
 
 + (NetworkController *)sharedInstance;
+
 - (void)retrieveExercises;
-- (void)retrieveLanguagesWithCompletion:(void (^)(void))block;
+- (void)retrieveMuscles;
+- (void)retrieveLanguagesWithCompletion:(completionBlock)block;
+- (void)retrieveMuscleImagesWithCompletion:(completionBlock)block;
 
 @end

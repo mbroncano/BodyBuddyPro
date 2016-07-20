@@ -96,6 +96,32 @@
     return store;
 }
 
++ (NSArray *)objectWithValue:(id)value forAttribute:(NSString *)attribute forEntityName:(NSString *)entityName withinContext:(NSManagedObjectContext *)context{
+    NSError *error = nil;
+
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:attribute ascending:YES]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K LIKE %@", attribute, value];
+    fetchRequest.predicate = predicate;
+    
+    NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
+    // TODO: check for errors
+    if (error == nil) {
+        if (results.count == 0) {
+            NSManagedObject *exercise = [NSEntityDescription
+                                         insertNewObjectForEntityForName:entityName
+                                         inManagedObjectContext:context];
+            
+            [exercise setValue:value forKey:attribute];
+            results = @[exercise];
+        }
+        
+        return results;
+    }
+    
+    return nil;
+}
+
 + (NSManagedObject *)objectWithId:(NSNumber *)objectId forEntityName:(NSString *)entityName withinContext:(NSManagedObjectContext *)context{
     NSError *error = nil;
 

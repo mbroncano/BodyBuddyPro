@@ -8,11 +8,15 @@
 
 #import "ExerciseDetailViewController.h"
 #import "ModelController.h"
+#import "NetworkController.h"
+#import <SVGKit/SVGKImage.h>
 
 @interface ExerciseDetailViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *frontMuscleImage;
+@property (weak, nonatomic) IBOutlet UIImageView *backMuscleImage;
 
 @end
 
@@ -47,32 +51,55 @@
                  }];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-
+- (void)updateView {
     NSManagedObjectContext *context = [[ModelController sharedInstance] mainObjectContext];
     // TODO: check for errors
     NSManagedObject *exercise = [ModelController objectWithId:self.exerciseId forEntityName:@"Exercise" withinContext:context];
     
-//    self.nameLabel.text = [exercise valueForKey:@"name"];    
-//    self.descLabel.text = [exercise valueForKey:@"desc"];
-
     NSMutableAttributedString *nameString = [[NSMutableAttributedString alloc]
                                          initWithData:[[exercise valueForKey:@"name"] dataUsingEncoding:NSUnicodeStringEncoding]
                                          options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
                                          documentAttributes:nil error:nil];
-    
-    [self setBaseFont:[UIFont systemFontOfSize:[UIFont systemFontSize]] inString:nameString];
-    
-    self.nameLabel.attributedText = nameString;
 
     NSMutableAttributedString *descString = [[NSMutableAttributedString alloc]
                                              initWithData:[[exercise valueForKey:@"desc"] dataUsingEncoding:NSUnicodeStringEncoding]
                                              options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }
                                              documentAttributes:nil error:nil];
+
+    [self setBaseFont:[UIFont systemFontOfSize:[UIFont systemFontSize]] inString:nameString];
     [self setBaseFont:[UIFont systemFontOfSize:[UIFont systemFontSize]] inString:descString];
 
+    self.nameLabel.attributedText = nameString;
     self.descLabel.attributedText = descString;
+    
+    NSArray *muscleImagesF = [ModelController objectWithValue:@"muscular_system_front.svg" forAttribute:@"name" forEntityName:@"Image" withinContext:context];
+    NSData *muscleImageDataF = [muscleImagesF[0] valueForKey:@"data"];
+    if (muscleImageDataF != nil) {
+        UIImage *image = [[SVGKImage imageWithData:muscleImageDataF] UIImage];
+        self.frontMuscleImage.image = image;
+    }
+
+    NSArray *muscleImagesBack = [ModelController objectWithValue:@"muscular_system_back.svg" forAttribute:@"name" forEntityName:@"Image" withinContext:context];
+    NSData *muscleImageDataBack = [muscleImagesBack[0] valueForKey:@"data"];
+    if (muscleImageDataBack != nil) {
+        UIImage *image = [[SVGKImage imageWithData:muscleImageDataBack] UIImage];
+        self.backMuscleImage.image = image;
+    }
+
+    [self.tableView reloadData];
+
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    [self updateView];
+    
+    [[NetworkController sharedInstance] retrieveMuscleImagesWithCompletion:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self updateView];
+        });
+    }];
     
     self.tableView.rowHeight = UITableViewAutomaticDimension;
 }
