@@ -122,6 +122,35 @@
     return nil;
 }
 
++ (NSArray *)objectWithIdArray:(NSArray *)objectIdArray forEntityName:(NSString *)entityName withinContext:(NSManagedObjectContext *)context{
+    NSError *error = nil;
+
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"id" ascending:YES]];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"id in %@", objectIdArray];
+    
+    NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
+    // TODO: check for errors
+    if (error == nil) {
+        if (results.count == 0) {
+            NSMutableArray *newResults = [@[] mutableCopy];
+            for (NSNumber *objectId in objectIdArray) {        
+                NSManagedObject *object = [NSEntityDescription
+                                           insertNewObjectForEntityForName:entityName
+                                           inManagedObjectContext:context];
+                
+                [object setValue:objectId forKey:@"id"];
+                [newResults addObject:object];
+            }
+            results = newResults;
+        }
+        
+        return results;
+    }
+    
+    return nil;
+}
+
 + (NSManagedObject *)objectWithId:(NSNumber *)objectId forEntityName:(NSString *)entityName withinContext:(NSManagedObjectContext *)context{
     NSError *error = nil;
 
@@ -151,7 +180,7 @@
 - (NSPredicate *)allExercisesPredicateWithSearchFilter:(NSString *)searchFilter {
     NSMutableArray *predicateArray = [@[] mutableCopy];
 
-    [predicateArray addObject: [NSPredicate predicateWithFormat:@"language == %@", self.languageId]];
+    [predicateArray addObject: [NSPredicate predicateWithFormat:@"language.id == %@", self.languageId]];
     if (![searchFilter isEqualToString:@""]) {
         [predicateArray addObject: [NSPredicate predicateWithFormat:@"name contains %@", searchFilter]];
     }

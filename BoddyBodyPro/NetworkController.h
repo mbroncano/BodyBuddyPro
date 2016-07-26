@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+FOUNDATION_EXPORT NSString *const muscularSystemFront;
+FOUNDATION_EXPORT NSString *const muscularSystemBack;
+FOUNDATION_EXPORT NSString *const muscleMainURL;
+FOUNDATION_EXPORT NSString *const muscleSecondaryURL;
+
+
+
 typedef void(^updateBlock)(NSDictionary *);
 typedef void(^completionBlock)();
 

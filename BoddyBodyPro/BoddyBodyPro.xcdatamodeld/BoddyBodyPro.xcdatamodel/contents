@@ -3,8 +3,10 @@
     <entity name="Exercise" syncable="YES">
         <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="language" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="language" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Language" syncable="YES"/>
+        <relationship name="muscles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Muscle" syncable="YES"/>
+        <relationship name="muscles_secondary" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Muscle" syncable="YES"/>
     </entity>
     <entity name="Image" syncable="YES">
         <attribute name="data" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
@@ -17,12 +19,13 @@
     </entity>
     <entity name="Muscle" syncable="YES">
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="is_front" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Exercise" positionX="-63" positionY="-18" width="128" height="105"/>
-        <element name="Language" positionX="-54" positionY="18" width="128" height="90"/>
-        <element name="Muscle" positionX="-36" positionY="45" width="128" height="75"/>
+        <element name="Exercise" positionX="-63" positionY="-18" width="128" height="135"/>
         <element name="Image" positionX="-18" positionY="54" width="128" height="75"/>
+        <element name="Language" positionX="-54" positionY="18" width="128" height="90"/>
+        <element name="Muscle" positionX="-36" positionY="45" width="128" height="90"/>
     </elements>
 </model>

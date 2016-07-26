@@ -9,6 +9,11 @@
 #import "NetworkController.h"
 #import "ModelController.h"
 
+NSString *const muscularSystemFront = @"/static/images/muscles/muscular_system_front.svg";
+NSString *const muscularSystemBack = @"/static/images/muscles/muscular_system_back.svg";
+NSString *const muscleMainURL = @"/static/images/muscles/main/muscle-%@.svg";
+NSString *const muscleSecondaryURL = @"/static/images/muscles/secondary/muscle-%@.svg";
+
 @interface NetworkController() {
     NSURLSession *session;
     ModelController *model;
@@ -121,7 +126,13 @@
         NSManagedObject *exercise = [ModelController objectWithId:result[@"id"] forEntityName:entityName withinContext:context];
         [exercise setValue:result[@"name"] forKey:@"name"];
         [exercise setValue:result[@"description"] forKey:@"desc"];
-        [exercise setValue:result[@"language"] forKey:@"language"];
+        
+        NSManagedObject *language = [ModelController objectWithId:result[@"language"] forEntityName:@"Language" withinContext:context];
+        [exercise setValue:language forKey:@"language"];
+        
+        NSArray *muscles = [ModelController objectWithIdArray:result[@"muscles"] forEntityName:@"Muscle" withinContext:context];
+        [exercise setValue:[NSSet setWithArray: muscles] forKey:@"muscles"];
+        
     } withCompletionBlock:^{}];
 }
 
@@ -133,6 +144,15 @@
         NSManagedObjectContext *context = [[ModelController sharedInstance] privateObjectContext];
         NSManagedObject *muscle = [ModelController objectWithId:result[@"id"] forEntityName:entityName withinContext:context];
         [muscle setValue:result[@"name"] forKey:@"name"];
+        [muscle setValue:result[@"is_front"] forKey:@"is_front"];
+        
+        // retrieve the images
+        NSString *urlMain = [NSString stringWithFormat:muscleMainURL, result[@"id"]];
+        NSString *urlSecondary = [NSString stringWithFormat:muscleSecondaryURL, result[@"id"]];
+        
+        [self retrieveImage:urlMain withCompletion:^{}];
+        [self retrieveImage:urlSecondary withCompletion:^{}];
+
     } withCompletionBlock:^{}];
 }
 
@@ -140,53 +160,56 @@
     NSString *entityName = @"Language";
     [self getEntityNamed:entityName
           queryItemArray:@[]
-               withUpdateBlock:^(NSDictionary *result) {
-        NSManagedObjectContext *context = [[ModelController sharedInstance] privateObjectContext];
-        NSManagedObject *object = [ModelController objectWithId:result[@"id"] forEntityName:entityName withinContext:context];
-        [object setValue:result[@"short_name"] forKey:@"short_name"];
-        [object setValue:result[@"full_name"] forKey:@"full_name"];
-    } withCompletionBlock:block];
+         withUpdateBlock:^(NSDictionary *result) {
+             NSManagedObjectContext *context = [[ModelController sharedInstance] privateObjectContext];
+             NSManagedObject *object = [ModelController objectWithId:result[@"id"] forEntityName:entityName withinContext:context];
+             [object setValue:result[@"short_name"] forKey:@"short_name"];
+             [object setValue:result[@"full_name"] forKey:@"full_name"];
+         } withCompletionBlock:block];
+}
+
+- (void)retrieveImage:(NSString *)imageURL withCompletion:(completionBlock)block {
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:imageURL relativeToURL:self.baseURL]];
+    [[session dataTaskWithRequest:request
+                completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                    if (error != nil) {
+                        NSLog(@"error! %@", error);
+                        return;
+                    }
+                    
+                    if (response != nil) {
+                        NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+                        if (statusCode != 200) {
+                            NSLog(@"response status code: %ld", (long)statusCode);
+                            return;
+                        }
+                    }
+                    
+                    if (data != nil) {
+                        NSManagedObjectContext *context = [[ModelController sharedInstance] privateObjectContext];
+                        NSString *fileName = request.URL.relativePath;
+                        NSArray *images = [ModelController objectWithValue:fileName forAttribute:@"name" forEntityName:@"Image" withinContext:context];
+                        if (images.count != 1) {
+                            NSLog(@"image cache inconsistency");
+                            abort();
+                        }
+                        
+                        NSManagedObject *image = images[0];
+                        [image setValue:data forKey:@"data"];
+                        
+                        [[ModelController sharedInstance] synchronize];
+                    }
+                    
+                    block();
+                }] resume];
 }
 
 // NOTE: the completion block is invocated for every resource loaded
 - (void)retrieveMuscleImagesWithCompletion:(completionBlock)block {
-    NSArray *resources = @[@"/static/images/muscles/muscular_system_front.svg",
-                           @"/static/images/muscles/muscular_system_back.svg"];
+    NSArray *resources = @[muscularSystemFront, muscularSystemBack];
 
     for (NSString *imagePath in resources) {
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:imagePath relativeToURL:self.baseURL]];
-        [[session dataTaskWithRequest:request
-                    completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                        if (error != nil) {
-                            NSLog(@"error! %@", error);
-                            return;
-                        }
-                        
-                        if (response != nil) {
-                            NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
-                            if (statusCode != 200) {
-                                NSLog(@"response status code: %ld", (long)statusCode);
-                                return;
-                            }
-                        }
-                        
-                        if (data != nil) {
-                            NSManagedObjectContext *context = [[ModelController sharedInstance] privateObjectContext];
-                            NSString *fileName = request.URL.lastPathComponent;
-                            NSArray *images = [ModelController objectWithValue:fileName forAttribute:@"name" forEntityName:@"Image" withinContext:context];
-                            if (images.count != 1) {
-                                NSLog(@"image cache inconsistency");
-                                abort();
-                            }
-                            
-                            NSManagedObject *image = images[0];
-                            [image setValue:data forKey:@"data"];
-                            
-                            [[ModelController sharedInstance] synchronize];
-                        }
-                        
-                        block();
-                    }] resume];
+        [self retrieveImage:imagePath withCompletion:block];
     }
 }
 

@@ -72,18 +72,75 @@
     self.nameLabel.attributedText = nameString;
     self.descLabel.attributedText = descString;
     
-    NSArray *muscleImagesF = [ModelController objectWithValue:@"muscular_system_front.svg" forAttribute:@"name" forEntityName:@"Image" withinContext:context];
-    NSData *muscleImageDataF = [muscleImagesF[0] valueForKey:@"data"];
-    if (muscleImageDataF != nil) {
-        UIImage *image = [[SVGKImage imageWithData:muscleImageDataF] UIImage];
-        self.frontMuscleImage.image = image;
+    NSMutableArray *frontMuscleImageArray = [@[] mutableCopy];
+    NSMutableArray *backMuscleImageArray = [@[] mutableCopy];
+    
+    // TODO: eventually abstract the image retrieval, update, etc.
+    NSArray *muscleImagesFront = [ModelController objectWithValue:muscularSystemFront forAttribute:@"name" forEntityName:@"Image" withinContext:context];
+    NSData *muscleImageDataFront = [muscleImagesFront[0] valueForKey:@"data"];
+    if (muscleImageDataFront != nil) {
+        UIImage *image = [[SVGKImage imageWithData:muscleImageDataFront] UIImage];
+//        self.frontMuscleImage.image = image;
+        [frontMuscleImageArray addObject:image];
     }
 
-    NSArray *muscleImagesBack = [ModelController objectWithValue:@"muscular_system_back.svg" forAttribute:@"name" forEntityName:@"Image" withinContext:context];
+    NSArray *muscleImagesBack = [ModelController objectWithValue:muscularSystemBack forAttribute:@"name" forEntityName:@"Image" withinContext:context];
     NSData *muscleImageDataBack = [muscleImagesBack[0] valueForKey:@"data"];
     if (muscleImageDataBack != nil) {
         UIImage *image = [[SVGKImage imageWithData:muscleImageDataBack] UIImage];
-        self.backMuscleImage.image = image;
+//        self.backMuscleImage.image = image;
+        [backMuscleImageArray addObject:image];
+    }
+    
+    // Additional muscle images
+    NSSet *musclePrimaryArray = [exercise valueForKey:@"muscles"];
+    for (NSManagedObject *muscle in musclePrimaryArray) {
+        NSString *musclePath = [NSString stringWithFormat:muscleMainURL, [muscle valueForKey:@"id"]];
+        NSArray *muscleImages = [ModelController objectWithValue:musclePath forAttribute:@"name" forEntityName:@"Image" withinContext:context];
+        NSData *muscleImageData = [muscleImages[0] valueForKey:@"data"];
+        if (muscleImageData != nil) {
+            UIImage *image = [[SVGKImage imageWithData:muscleImageData] UIImage];
+            if ([[muscle valueForKey:@"is_front"] boolValue]) {
+                [frontMuscleImageArray addObject:image];
+            } else {
+                [backMuscleImageArray addObject:image];
+            }
+        }
+    }
+    
+    NSSet *muscleSecondayArray = [exercise valueForKey:@"muscles_secondary"];
+    for (NSManagedObject *muscle in muscleSecondayArray) {
+        NSString *musclePath = [NSString stringWithFormat:muscleSecondaryURL, [muscle valueForKey:@"id"]];
+        NSArray *muscleImages = [ModelController objectWithValue:musclePath forAttribute:@"name" forEntityName:@"Image" withinContext:context];
+        NSData *muscleImageData = [muscleImages[0] valueForKey:@"data"];
+        if (muscleImageData != nil) {
+            UIImage *image = [[SVGKImage imageWithData:muscleImageData] UIImage];
+            if ([[muscle valueForKey:@"is_front"] boolValue]) {
+                [frontMuscleImageArray addObject:image];
+            } else {
+                [backMuscleImageArray addObject:image];
+            }
+        }
+    }
+
+    if (frontMuscleImageArray.count != 0) {
+        UIImage *img = frontMuscleImageArray[0];
+        CGSize size = img.size;
+        UIGraphicsBeginImageContext(size);
+        for(UIImage *image in frontMuscleImageArray) {
+            [image drawAtPoint:CGPointZero blendMode:kCGBlendModeNormal alpha:1.0];
+        }
+        self.frontMuscleImage.image = UIGraphicsGetImageFromCurrentImageContext();
+    }
+
+    if (backMuscleImageArray.count != 0) {
+        UIImage *img = backMuscleImageArray[0];
+        CGSize size = img.size;
+        UIGraphicsBeginImageContext(size);
+        for(UIImage *image in backMuscleImageArray) {
+            [image drawAtPoint:CGPointZero blendMode:kCGBlendModeNormal alpha:1.0];
+        }
+        self.backMuscleImage.image = UIGraphicsGetImageFromCurrentImageContext();
     }
 
     [self.tableView reloadData];
